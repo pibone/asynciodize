@@ -6,7 +6,7 @@ setup(
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'A package to wrap/decorate blocking functions for use in asyncIO',   # Give a short description about your library
   author = 'Daniel Peña Iglesias',                   # Type in your name
-  author_email = 'contact@dani-pi.com',      # Type in your E-Mail
+  author_email = 'danpeis@gmail.com',      # Type in your E-Mail
   url = 'https://github.com/pibone/asynciodize',   # Provide either the link to your github or to your website
   download_url = 'https://github.com/pibone/asynciodize/archive/v_01.tar.gz',    # I explain this later on
   keywords = ['asyncio', 'blocking', 'multithreading'],   # Keywords that define your package best
