@@ -29,13 +29,13 @@ Example (`asynciodize_usage.py`):
 ```python
 #!/usr/bin/python3
 
-from concurrent.futures import ThreadedPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 import logging
 import asyncio
 from asynciodize import asynciodize 
 import time
 
-custom_executor = ThreadedPoolExecutor(2)
+custom_executor = ThreadPoolExecutor(2)
 
 logger_format = '%(asctime)s:%(threadName)s:%(message)s'
 logging.basicConfig(format=logger_format, level=logging.INFO, datefmt="%H:%M:%S")
@@ -58,7 +58,7 @@ async def main():
     await asyncio.gather(
         unblocking_fn(1, 'First message'),
         asynciodize(blocking_sleep_message)(2, 'Second message'),
-        custom_blocking_fn(3, 'Third message'),
+        custom_unblocking_fn(3, 'Third message'),
         asynciodize(blocking_sleep_message, executor=custom_executor)(4, 'Fourth message'),
     )
     logging.info("Main Ended")
