@@ -11,7 +11,7 @@ Use it to decorate or wrap your blocking functions and convert them into corouti
 
 ## Install
 
-You may install this via the [`argexec`](https://pypi.org/project/asynciodize/) package on [PyPi](https://pypi.org):
+You may install this via the [`asynciodize`](https://pypi.org/project/asynciodize/) package on [PyPi](https://pypi.org):
 
 ```bash
 pip3 install asynciodize
