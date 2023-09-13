@@ -1,13 +1,13 @@
 # asynciodize
 
-A simple decorator to "unblock" blocking functions using a threaded executor. Eases the usage of asyncio with subprocesses or multithreading.
+A simple decorator to "unblock" blocking functions using a threaded executor. Eases the usage of asyncio with multithreading.
 
 Use it to decorate or wrap your blocking functions and convert them into coroutine based functions usable with async/await.
 
 ## Features
 * Executes your function using your asyncio running loop.
 * Executes your code in the executor of preference.
-* By default creates a ThreadPoolExecutor with the using the total amount of cpus in the machine.
+* By default creates a ThreadPoolExecutor using the amount of cpus in the machine as the count.
 
 ## Install
 
@@ -17,19 +17,25 @@ You may install this via the [`asynciodize`](https://pypi.org/project/asynciodiz
 pip3 install asynciodize
 ```
 
-## Usage
+## Available arguments
+* use the keyword argument `executor` to opt out from the default executor
 
+## Usage & Limitations
 The decorator may be applied to any Python function that meets the following requirements:
-* Is not a member function in a class. DOES NOT SUPPORT SELF
+* Is not a member function in a class. DOES NOT SUPPORT self
+* DOES NOT SUPPORT ProcessPoolExecutor
 
-Example (`foo.py`):
+Example (`asynciodize_usage.py`):
 ```python
 #!/usr/bin/python3
 
+import concurrent.futures as cf
 import logging
 import asyncio
 from asynciodize import asynciodize 
 import time
+
+custom_executor = cf.ThreadedPoolExecutor(2)
 
 logger_format = '%(asctime)s:%(threadName)s:%(message)s'
 logging.basicConfig(format=logger_format, level=logging.INFO, datefmt="%H:%M:%S")
@@ -43,12 +49,16 @@ def blocking_sleep_message(delay, message):
 def unblocking_fn(num, message):
     return blocking_sleep_message(num, message)
 
+@asynciodize(executor=custom_executor)
+def custom_unblocking_fn(num, message):
+    return blocking_sleep_message(num, message)
+
 async def main():
     logging.info("Main started")
     await asyncio.gather(
         unblocking_fn(1, 'First message'),
         asynciodize(blocking_sleep_message)(2, 'Second message'),
-        asynciodize(blocking_sleep_message)(3, 'Third message'),
+        custom_blocking_fn(3, 'Third message'),
         unblocking_fn(4, 'Fourth message'),
     )
     logging.info("Main Ended")
